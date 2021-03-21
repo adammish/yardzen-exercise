@@ -43,7 +43,7 @@ function App() {
 
     Object.keys(preparedTypes).map((key, i) => {
       // In each group, remove duplicate items
-      return preparedTypes[key].filter(
+      preparedTypes[key] = preparedTypes[key].filter(
         (v, i, a) => a.findIndex((t) => t.name === v.name) === i
       );
     });

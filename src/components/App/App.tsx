@@ -20,6 +20,7 @@ function App() {
   const [items, setItems] = useState<Item[]>([]);
   const [types, setTypes] = useState<Types>({});
   const [budget, setBudget] = useState<null | number>(null);
+  const [selectedItems, setSelectedItems] = useState<Item[]>([]);
 
   useEffect(() => {
     fetchItems();
@@ -54,6 +55,20 @@ function App() {
     setBudget(budget);
   };
 
+  const handleSelectedItemsChange = (item: Item) => {
+    // If item is already selected and clicked again, remove it
+    if (selectedItems.find((o) => o.name === item.name)) {
+      setSelectedItems(selectedItems.filter((o) => o.name !== item.name));
+      // If selected already has an item with the same type, remove and replace it
+    } else if (selectedItems.find((o) => o.type === item.type)) {
+      const newItems = selectedItems.filter((o) => o.type !== item.type);
+      setSelectedItems([...newItems, item]);
+      // Else add to selected
+    } else {
+      setSelectedItems((selectedItems) => [...selectedItems, item]);
+    }
+  };
+
   const groupBy = <T, K extends keyof any>(list: T[], getKey: (item: T) => K) =>
     list.reduce((previous, currentItem) => {
       const group = getKey(currentItem);
@@ -69,7 +84,9 @@ function App() {
         <Calculator
           types={types}
           budget={budget}
+          selectedItems={selectedItems}
           onBudgetChange={handleBudgetChange}
+          onSelectedItemsChange={handleSelectedItemsChange}
         />
       </Box>
     </Container>

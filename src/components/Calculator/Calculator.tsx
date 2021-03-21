@@ -25,13 +25,22 @@ interface Item {
 interface Props {
   types: Types;
   budget: null | number;
+  selectedItems: Item[];
   onBudgetChange: (budget: number) => void;
+  onSelectedItemsChange: (item: Item) => void;
 }
 
 function Calculator(props: Props) {
   // Makes sure e.curentTarget.value is a number with parseFloat
   const handleBudgetChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     props.onBudgetChange(parseFloat(e.currentTarget.value));
+  };
+
+  const handleSelectedItemsChange = (
+    e: React.MouseEvent<HTMLElement>,
+    item: Item
+  ) => {
+    props.onSelectedItemsChange(item);
   };
 
   return (
@@ -84,11 +93,11 @@ function Calculator(props: Props) {
                     exclusive
                     aria-label="type"
                     size="large"
-                    // value={values[key.toLowerCase()]}
-                    // onChange={handleChange(key.toLowerCase())}
+                    onChange={handleSelectedItemsChange}
+                    value={props.selectedItems}
                   >
                     {props.types[key].map((item, i) => (
-                      <ToggleButton value={item.name}>
+                      <ToggleButton value={item}>
                         {item.name} <br />
                         {`$${(item.lowPrice / 100).toFixed(2)} - $${(
                           item.highPrice / 100

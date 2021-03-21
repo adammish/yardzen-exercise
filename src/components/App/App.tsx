@@ -22,7 +22,6 @@ interface PriceRange {
 }
 
 function App() {
-  const [items, setItems] = useState<Item[]>([]);
   const [types, setTypes] = useState<Types>({});
   const [budget, setBudget] = useState<number>(0);
   const [budgetStatus, setBudgetStatus] = useState<'over' | 'under' | 'within'>(
@@ -64,7 +63,6 @@ function App() {
       fetchedItems.push(item.data() as Item);
     });
 
-    setItems(fetchedItems);
     setTypes(prepTypes(fetchedItems));
   };
 

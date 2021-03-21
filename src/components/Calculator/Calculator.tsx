@@ -22,10 +22,16 @@ interface Item {
   highPrice: number;
 }
 
+interface PriceRange {
+  lowPrice: number;
+  highPrice: number;
+}
+
 interface Props {
   types: Types;
   budget: null | number;
   selectedItems: Item[];
+  priceRange: PriceRange;
   onBudgetChange: (budget: number) => void;
   onSelectedItemsChange: (item: Item) => void;
 }
@@ -62,7 +68,8 @@ function Calculator(props: Props) {
         <Grid item xs={12} sm={6}>
           <Box mt={4} p={2} bgcolor="black" color="white">
             <Typography variant="h5" component="h2">
-              Select items range: $40000
+              Select items range: ${props.priceRange.lowPrice} - $
+              {props.priceRange.highPrice}
             </Typography>
           </Box>
         </Grid>

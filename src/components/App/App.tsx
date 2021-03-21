@@ -16,15 +16,31 @@ interface Types {
   [key: string]: Item[];
 }
 
+interface PriceRange {
+  lowPrice: number;
+  highPrice: number;
+}
+
 function App() {
   const [items, setItems] = useState<Item[]>([]);
   const [types, setTypes] = useState<Types>({});
   const [budget, setBudget] = useState<null | number>(null);
   const [selectedItems, setSelectedItems] = useState<Item[]>([]);
+  const [priceRange, setPriceRange] = useState<PriceRange>({
+    lowPrice: 0,
+    highPrice: 0
+  });
 
   useEffect(() => {
     fetchItems();
   }, []);
+
+  // Update priceRange whenever selectedItems changes
+  useEffect(() => {
+    const low = selectedItems.reduce((prev, next) => prev + next.lowPrice, 0);
+    const high = selectedItems.reduce((prev, next) => prev + next.highPrice, 0);
+    setPriceRange({ lowPrice: low, highPrice: high });
+  }, [selectedItems]);
 
   const fetchItems = async () => {
     // Fetch items from firebase
@@ -85,6 +101,7 @@ function App() {
           types={types}
           budget={budget}
           selectedItems={selectedItems}
+          priceRange={priceRange}
           onBudgetChange={handleBudgetChange}
           onSelectedItemsChange={handleSelectedItemsChange}
         />

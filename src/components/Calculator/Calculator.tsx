@@ -12,8 +12,8 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
 
 interface Props {
-  types: Object;
-  budget: Number;
+  types: object;
+  budget: null | number;
   onBudgetChange: (budget: number) => void;
 }
 
@@ -31,7 +31,7 @@ function Calculator(props: Props) {
       {/* <Typography variant="body1">{JSON.stringify(props.types)}</Typography> */}
       <Grid container spacing={3}>
         <Grid item xs={6}>
-          <FormControl component="fieldset">
+          <FormControl fullWidth component="fieldset">
             <InputLabel htmlFor="standard-adornment-budget">
               Insert your budget
             </InputLabel>

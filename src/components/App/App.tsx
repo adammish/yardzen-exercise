@@ -19,7 +19,7 @@ interface Types {
 function App() {
   const [items, setItems] = useState<Item[]>([]);
   const [types, setTypes] = useState<Types>({});
-  const [budget, setBudget] = useState<Number>(NaN);
+  const [budget, setBudget] = useState<null | number>(null);
 
   useEffect(() => {
     fetchItems();

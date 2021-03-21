@@ -4,7 +4,6 @@ import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -29,7 +28,8 @@ interface PriceRange {
 
 interface Props {
   types: Types;
-  budget: null | number;
+  budget: number;
+  budgetStatus: 'over' | 'under' | 'within';
   selectedItems: Item[];
   priceRange: PriceRange;
   onBudgetChange: (budget: number) => void;
@@ -74,6 +74,13 @@ function Calculator(props: Props) {
           </Box>
         </Grid>
         <Grid item xs={12}>
+          <Box mt={4} p={2} bgcolor="black" color="white">
+            <Typography variant="h5" component="h2" align="center">
+              You're {props.budgetStatus} your budget.
+            </Typography>
+          </Box>
+        </Grid>
+        <Grid item xs={12}>
           <FormControl fullWidth component="fieldset">
             <InputLabel htmlFor="standard-adornment-budget">
               Insert your budget
@@ -81,7 +88,7 @@ function Calculator(props: Props) {
             <Input
               id="standard-adornment-budget"
               type="number"
-              value={props.budget}
+              value={props.budget ? props.budget : ''}
               onChange={handleBudgetChange}
               startAdornment={
                 <InputAdornment position="start">$</InputAdornment>

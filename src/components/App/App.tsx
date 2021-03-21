@@ -24,7 +24,10 @@ interface PriceRange {
 function App() {
   const [items, setItems] = useState<Item[]>([]);
   const [types, setTypes] = useState<Types>({});
-  const [budget, setBudget] = useState<null | number>(null);
+  const [budget, setBudget] = useState<number>(0);
+  const [budgetStatus, setBudgetStatus] = useState<'over' | 'under' | 'within'>(
+    'within'
+  );
   const [selectedItems, setSelectedItems] = useState<Item[]>([]);
   const [priceRange, setPriceRange] = useState<PriceRange>({
     lowPrice: 0,
@@ -35,12 +38,23 @@ function App() {
     fetchItems();
   }, []);
 
-  // Update priceRange whenever selectedItems changes
   useEffect(() => {
+    // Update priceRange whenever selectedItems changes
     const low = selectedItems.reduce((prev, next) => prev + next.lowPrice, 0);
     const high = selectedItems.reduce((prev, next) => prev + next.highPrice, 0);
     setPriceRange({ lowPrice: low, highPrice: high });
   }, [selectedItems]);
+
+  useEffect(() => {
+    // Update budgetStatus whenever priceRange or budget changes
+    if (priceRange.lowPrice / 100 > budget) {
+      setBudgetStatus('under');
+    } else if (priceRange.highPrice / 100 < budget) {
+      setBudgetStatus('over');
+    } else {
+      setBudgetStatus('within');
+    }
+  }, [priceRange, budget]);
 
   const fetchItems = async () => {
     // Fetch items from firebase
@@ -100,6 +114,7 @@ function App() {
         <Calculator
           types={types}
           budget={budget}
+          budgetStatus={budgetStatus}
           selectedItems={selectedItems}
           priceRange={priceRange}
           onBudgetChange={handleBudgetChange}

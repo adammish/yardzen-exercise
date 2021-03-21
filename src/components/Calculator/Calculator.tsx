@@ -8,11 +8,22 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import Radio from '@material-ui/core/Radio';
+import ToggleButton from '@material-ui/lab/ToggleButton';
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+
+interface Types {
+  [key: string]: Item[];
+}
+
+interface Item {
+  type: string;
+  name: string;
+  lowPrice: number;
+  highPrice: number;
+}
 
 interface Props {
-  types: object;
+  types: Types;
   budget: null | number;
   onBudgetChange: (budget: number) => void;
 }
@@ -25,12 +36,28 @@ function Calculator(props: Props) {
 
   return (
     <Box my={4}>
-      <Typography variant="h4" component="h1" align="center">
-        Calculator
-      </Typography>
-      {/* <Typography variant="body1">{JSON.stringify(props.types)}</Typography> */}
       <Grid container spacing={3}>
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={6}>
+          <Box mt={4} p={2} bgcolor="black" color="white">
+            {props.budget ? (
+              <Typography variant="h5" component="h2">
+                Your budget: ${props.budget}
+              </Typography>
+            ) : (
+              <Typography variant="h5" component="h2">
+                Please input your budget
+              </Typography>
+            )}
+          </Box>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Box mt={4} p={2} bgcolor="black" color="white">
+            <Typography variant="h5" component="h2">
+              Select items range: $40000
+            </Typography>
+          </Box>
+        </Grid>
+        <Grid item xs={12}>
           <FormControl fullWidth component="fieldset">
             <InputLabel htmlFor="standard-adornment-budget">
               Insert your budget
@@ -45,24 +72,34 @@ function Calculator(props: Props) {
               }
             />
           </FormControl>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <Box mt={4}>
-            {props.budget ? (
-              <Typography variant="h5" component="h2">
-                Your budget: ${props.budget}
-              </Typography>
-            ) : (
-              <Typography variant="h5" component="h2">
-                Please input your budget
-              </Typography>
-            )}
-          </Box>
-          <Box mt={4}>
-            <Typography variant="h5" component="h2">
-              Select items range: <br /> $40000
-            </Typography>
-          </Box>
+          {Object.keys(props.types).map((key, i) => (
+            <FormControl fullWidth component="fieldset">
+              <Box key={i} mt={4}>
+                <FormLabel component="legend">
+                  {/* Replace underscore with space */}
+                  {key.replace(/_/g, ' ')}
+                </FormLabel>
+                <Box mt={2}>
+                  <ToggleButtonGroup
+                    exclusive
+                    aria-label="type"
+                    size="large"
+                    // value={values[key.toLowerCase()]}
+                    // onChange={handleChange(key.toLowerCase())}
+                  >
+                    {props.types[key].map((item, i) => (
+                      <ToggleButton value={item.name}>
+                        {item.name} <br />
+                        {`$${(item.lowPrice / 100).toFixed(2)} - $${(
+                          item.highPrice / 100
+                        ).toFixed(2)}`}
+                      </ToggleButton>
+                    ))}
+                  </ToggleButtonGroup>
+                </Box>
+              </Box>
+            </FormControl>
+          ))}
         </Grid>
       </Grid>
     </Box>

@@ -30,7 +30,7 @@ function ItemSelector(props: Props) {
         Next, choose which items you want to have in your yard:
       </Typography>
       {Object.keys(props.types).map((key, i) => (
-        <FormControl fullWidth component="fieldset">
+        <FormControl fullWidth component="fieldset" key={key}>
           <Box key={i} mt={4}>
             <FormLabel component="legend">
               {/* Replace underscore with space */}
@@ -45,7 +45,7 @@ function ItemSelector(props: Props) {
                 value={props.selectedItems}
               >
                 {props.types[key].map((item, i) => (
-                  <ToggleButton value={item}>
+                  <ToggleButton value={item} key={item.name}>
                     {item.name} <br />
                     {`${currency(item.lowPrice / 100)} - ${currency(
                       item.highPrice / 100
@@ -57,7 +57,7 @@ function ItemSelector(props: Props) {
           </Box>
         </FormControl>
       ))}
-      {/* Show if any items are selected */}
+      {/* Show only if any items are selected */}
       {!!props.selectedItems.length && (
         <Box mt={4}>
           <Typography variant="h5" component="h2">

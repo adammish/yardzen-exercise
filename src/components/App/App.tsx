@@ -25,6 +25,22 @@ function App() {
   const [step, setStep] = useState<number>(1);
 
   useEffect(() => {
+    const fetchItems = async () => {
+      // Fetch items from firebase
+      const response = await db.collection('items').get();
+
+      if (response.docs.length) {
+        let fetchedItems: Item[] = [];
+        response.docs.forEach((item) => {
+          fetchedItems.push(item.data() as Item);
+        });
+
+        setTypes(prepTypes(fetchedItems));
+      } else {
+        setFetchError(true);
+      }
+    };
+
     fetchItems();
   }, []);
 
@@ -48,27 +64,11 @@ function App() {
     }
   }, [priceRange, budget]);
 
-  const fetchItems = async () => {
-    // Fetch items from firebase
-    const response = await db.collection('items').get();
-
-    if (response.docs.length) {
-      let fetchedItems: Item[] = [];
-      response.docs.forEach((item) => {
-        fetchedItems.push(item.data() as Item);
-      });
-
-      setTypes(prepTypes(fetchedItems));
-    } else {
-      setFetchError(true);
-    }
-  };
-
   const prepTypes = (items: Item[]): Types => {
     // Group items by type
     const preparedTypes = groupBy(items, (i) => i.type);
 
-    Object.keys(preparedTypes).map((key, i) => {
+    Object.keys(preparedTypes).forEach((key) => {
       // In each group, remove duplicate items
       preparedTypes[key] = preparedTypes[key].filter(
         (v, i, a) => a.findIndex((t) => t.name === v.name) === i

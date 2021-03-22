@@ -4,12 +4,14 @@ import { groupBy } from 'utility';
 import db from 'firebase.config.js';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
 import Header from 'components/Header/Header';
 import Budget from 'components/Budget/Budget';
 import ItemSelector from 'components/ItemSelector/ItemSelector';
 import Results from 'components/Results/Results';
 
 function App() {
+  const [fetchError, setFetchError] = useState<boolean>(false);
   const [types, setTypes] = useState<Types>({});
   const [budget, setBudget] = useState<number | null>(null);
   const [budgetStatus, setBudgetStatus] = useState<'over' | 'under' | 'within'>(
@@ -49,12 +51,17 @@ function App() {
   const fetchItems = async () => {
     // Fetch items from firebase
     const response = await db.collection('items').get();
-    let fetchedItems: Item[] = [];
-    response.docs.forEach((item) => {
-      fetchedItems.push(item.data() as Item);
-    });
 
-    setTypes(prepTypes(fetchedItems));
+    if (response.docs.length) {
+      let fetchedItems: Item[] = [];
+      response.docs.forEach((item) => {
+        fetchedItems.push(item.data() as Item);
+      });
+
+      setTypes(prepTypes(fetchedItems));
+    } else {
+      setFetchError(true);
+    }
   };
 
   const prepTypes = (items: Item[]): Types => {
@@ -100,33 +107,45 @@ function App() {
     <Container maxWidth="md">
       <Box my={4} p={4} bgcolor="white" boxShadow={1}>
         <Header />
-        {/* Conditionally show components based on step in process */}
-        {step === 1 && (
-          <Budget
-            budget={budget}
-            onChange={handleBudgetChange}
-            incrementStep={incrementStep}
-          />
+        {!fetchError && (
+          <Box>
+            {/* Conditionally show components based on step in process */}
+            {step === 1 && (
+              <Budget
+                budget={budget}
+                onChange={handleBudgetChange}
+                incrementStep={incrementStep}
+              />
+            )}
+            {step === 2 && (
+              <ItemSelector
+                types={types}
+                budget={budget}
+                // budgetStatus={budgetStatus}
+                selectedItems={selectedItems}
+                priceRange={priceRange}
+                onChange={handleSelectedItemsChange}
+                incrementStep={incrementStep}
+                decrementStep={decrementStep}
+              />
+            )}
+            {step === 3 && (
+              <Results
+                budget={budget}
+                budgetStatus={budgetStatus}
+                priceRange={priceRange}
+                decrementStep={decrementStep}
+              />
+            )}
+          </Box>
         )}
-        {step === 2 && (
-          <ItemSelector
-            types={types}
-            budget={budget}
-            // budgetStatus={budgetStatus}
-            selectedItems={selectedItems}
-            priceRange={priceRange}
-            onChange={handleSelectedItemsChange}
-            incrementStep={incrementStep}
-            decrementStep={decrementStep}
-          />
-        )}
-        {step === 3 && (
-          <Results
-            budget={budget}
-            budgetStatus={budgetStatus}
-            priceRange={priceRange}
-            decrementStep={decrementStep}
-          />
+        {fetchError && (
+          <Box mt={4}>
+            <Typography variant="h5" component="p">
+              We're sorry, something happened while fetching the data, please
+              try again later.
+            </Typography>
+          </Box>
         )}
       </Box>
     </Container>

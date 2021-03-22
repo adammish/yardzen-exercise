@@ -4,7 +4,9 @@ import db from 'firebase.config.js';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import Header from 'components/Header/Header';
-import Calculator from 'components/Calculator/Calculator';
+import Budget from 'components/Budget/Budget';
+import ItemSelector from 'components/ItemSelector/ItemSelector';
+import Results from 'components/Results/Results';
 
 function App() {
   const [types, setTypes] = useState<Types>({});
@@ -94,14 +96,18 @@ function App() {
     <Container maxWidth="md">
       <Box my={4} p={4} bgcolor="white" boxShadow={1}>
         <Header />
-        <Calculator
+        <Budget budget={budget} onChange={handleBudgetChange} />
+        <ItemSelector
           types={types}
-          budget={budget}
           budgetStatus={budgetStatus}
           selectedItems={selectedItems}
           priceRange={priceRange}
-          onBudgetChange={handleBudgetChange}
-          onSelectedItemsChange={handleSelectedItemsChange}
+          onChange={handleSelectedItemsChange}
+        />
+        <Results
+          budget={budget}
+          budgetStatus={budgetStatus}
+          priceRange={priceRange}
         />
       </Box>
     </Container>

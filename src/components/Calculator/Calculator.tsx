@@ -1,4 +1,5 @@
 import React from 'react';
+import { Types, Item, PriceRange } from 'interfaces';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
@@ -9,22 +10,6 @@ import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-
-interface Types {
-  [key: string]: Item[];
-}
-
-interface Item {
-  type: string;
-  name: string;
-  lowPrice: number;
-  highPrice: number;
-}
-
-interface PriceRange {
-  lowPrice: number;
-  highPrice: number;
-}
 
 interface Props {
   types: Types;

@@ -1,25 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { Types, Item, PriceRange } from 'interfaces';
 import db from 'firebase.config.js';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import Header from 'components/Header/Header';
 import Calculator from 'components/Calculator/Calculator';
-
-interface Item {
-  type: string;
-  name: string;
-  lowPrice: number;
-  highPrice: number;
-}
-
-interface Types {
-  [key: string]: Item[];
-}
-
-interface PriceRange {
-  lowPrice: number;
-  highPrice: number;
-}
 
 function App() {
   const [types, setTypes] = useState<Types>({});

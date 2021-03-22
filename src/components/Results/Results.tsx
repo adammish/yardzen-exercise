@@ -12,11 +12,17 @@ interface Props {
 }
 
 function Results(props: Props) {
+  const currency = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 2
+  });
+
   return (
     <Box mt={4}>
       <Typography variant="h5" component="h2">
-        Select items range: ${props.priceRange.lowPrice} - $
-        {props.priceRange.highPrice}
+        Select items range: {currency.format(props.priceRange.lowPrice / 100)} -{' '}
+        {currency.format(props.priceRange.highPrice / 100)}
       </Typography>
 
       <Typography variant="h5" component="h2">

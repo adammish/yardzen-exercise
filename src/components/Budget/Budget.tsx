@@ -1,10 +1,9 @@
 import React from 'react';
+import './Budget.css';
+import CurrencyInput from 'react-currency-input-field';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Input from '@material-ui/core/Input';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import Button from '@material-ui/core/Button';
 
 interface Props {
@@ -14,9 +13,9 @@ interface Props {
 }
 
 function Budget(props: Props) {
-  // Makes sure e.curentTarget.value is a number with parseFloat
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    props.onChange(parseFloat(e.currentTarget.value));
+  const handleChange = (value: string | undefined): void => {
+    const rawValue = value === undefined ? 'undefined' : value;
+    props.onChange(parseFloat(rawValue));
   };
 
   return (
@@ -24,26 +23,31 @@ function Budget(props: Props) {
       <Typography variant="h5" component="h2">
         To start, please input your budget:
       </Typography>
-      <FormControl fullWidth component="fieldset">
-        <InputLabel htmlFor="standard-adornment-budget">
-          Insert your budget
-        </InputLabel>
-        <Input
-          id="standard-adornment-budget"
-          type="number"
-          value={props.budget ? props.budget : ''}
-          onChange={handleChange}
-          startAdornment={<InputAdornment position="start">$</InputAdornment>}
-        />
-      </FormControl>
-      <Button
-        onClick={props.incrementStep}
-        variant="contained"
-        size="large"
-        disabled={!props.budget}
-      >
-        Next Step
-      </Button>
+      <Box mt={4}>
+        <FormControl fullWidth>
+          <CurrencyInput
+            id="budget-input"
+            name="budget-input"
+            className="budgetInput"
+            placeholder="Please enter your budget"
+            prefix={'$'}
+            decimalsLimit={2}
+            onValueChange={handleChange}
+            value={props.budget ? props.budget?.toString() : ''}
+          />
+        </FormControl>
+      </Box>
+      <Box mt={4}>
+        <Button
+          onClick={props.incrementStep}
+          variant="contained"
+          color="primary"
+          size="large"
+          disabled={!props.budget}
+        >
+          Next Step
+        </Button>
+      </Box>
     </Box>
   );
 }

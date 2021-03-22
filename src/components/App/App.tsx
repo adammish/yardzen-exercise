@@ -69,7 +69,7 @@ function App() {
     return preparedTypes;
   };
 
-  const handleBudgetChange = (budget: number) => {
+  const handleBudgetChange = (budget: number | null) => {
     setBudget(budget);
   };
 

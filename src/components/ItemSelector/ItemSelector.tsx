@@ -23,11 +23,17 @@ function ItemSelector(props: Props) {
     props.onChange(item);
   };
 
+  const currency = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 2
+  });
+
   return (
     <Box mt={4}>
       <Typography variant="h5" component="h2">
-        Select items range: ${props.priceRange.lowPrice} - $
-        {props.priceRange.highPrice}
+        Select items range: {currency.format(props.priceRange.lowPrice / 100)} -{' '}
+        {currency.format(props.priceRange.highPrice / 100)}
       </Typography>
       {Object.keys(props.types).map((key, i) => (
         <FormControl fullWidth component="fieldset">
@@ -47,9 +53,9 @@ function ItemSelector(props: Props) {
                 {props.types[key].map((item, i) => (
                   <ToggleButton value={item}>
                     {item.name} <br />
-                    {`$${(item.lowPrice / 100).toFixed(2)} - $${(
-                      item.highPrice / 100
-                    ).toFixed(2)}`}
+                    {`${currency.format(
+                      item.lowPrice / 100
+                    )} - ${currency.format(item.highPrice / 100)}`}
                   </ToggleButton>
                 ))}
               </ToggleButtonGroup>

@@ -10,7 +10,7 @@ import Results from 'components/Results/Results';
 
 function App() {
   const [types, setTypes] = useState<Types>({});
-  const [budget, setBudget] = useState<number>(0);
+  const [budget, setBudget] = useState<number | null>(null);
   const [budgetStatus, setBudgetStatus] = useState<'over' | 'under' | 'within'>(
     'within'
   );
@@ -19,6 +19,7 @@ function App() {
     lowPrice: 0,
     highPrice: 0
   });
+  const [step, setStep] = useState<number>(1);
 
   useEffect(() => {
     fetchItems();
@@ -33,12 +34,14 @@ function App() {
 
   useEffect(() => {
     // Update budgetStatus whenever priceRange or budget changes
-    if (priceRange.lowPrice / 100 > budget) {
-      setBudgetStatus('under');
-    } else if (priceRange.highPrice / 100 < budget) {
-      setBudgetStatus('over');
-    } else {
-      setBudgetStatus('within');
+    if (budget) {
+      if (priceRange.lowPrice / 100 > budget) {
+        setBudgetStatus('under');
+      } else if (priceRange.highPrice / 100 < budget) {
+        setBudgetStatus('over');
+      } else {
+        setBudgetStatus('within');
+      }
     }
   }, [priceRange, budget]);
 
@@ -84,6 +87,14 @@ function App() {
     }
   };
 
+  const incrementStep = () => {
+    setStep((step) => step + 1);
+  };
+
+  const decrementStep = () => {
+    setStep((step) => step - 1);
+  };
+
   const groupBy = <T, K extends keyof any>(list: T[], getKey: (item: T) => K) =>
     list.reduce((previous, currentItem) => {
       const group = getKey(currentItem);
@@ -96,19 +107,33 @@ function App() {
     <Container maxWidth="md">
       <Box my={4} p={4} bgcolor="white" boxShadow={1}>
         <Header />
-        <Budget budget={budget} onChange={handleBudgetChange} />
-        <ItemSelector
-          types={types}
-          budgetStatus={budgetStatus}
-          selectedItems={selectedItems}
-          priceRange={priceRange}
-          onChange={handleSelectedItemsChange}
-        />
-        <Results
-          budget={budget}
-          budgetStatus={budgetStatus}
-          priceRange={priceRange}
-        />
+        {/* Conditionally show components based on step in process */}
+        {step === 1 && (
+          <Budget
+            budget={budget}
+            onChange={handleBudgetChange}
+            incrementStep={incrementStep}
+          />
+        )}
+        {step === 2 && (
+          <ItemSelector
+            types={types}
+            budgetStatus={budgetStatus}
+            selectedItems={selectedItems}
+            priceRange={priceRange}
+            onChange={handleSelectedItemsChange}
+            incrementStep={incrementStep}
+            decrementStep={decrementStep}
+          />
+        )}
+        {step === 3 && (
+          <Results
+            budget={budget}
+            budgetStatus={budgetStatus}
+            priceRange={priceRange}
+            decrementStep={decrementStep}
+          />
+        )}
       </Box>
     </Container>
   );

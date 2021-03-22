@@ -4,6 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
+import Button from '@material-ui/core/Button';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 
@@ -13,6 +14,8 @@ interface Props {
   selectedItems: Item[];
   priceRange: PriceRange;
   onChange: (item: Item) => void;
+  incrementStep: () => void;
+  decrementStep: () => void;
 }
 
 function ItemSelector(props: Props) {
@@ -54,6 +57,17 @@ function ItemSelector(props: Props) {
           </Box>
         </FormControl>
       ))}
+      <Button onClick={props.decrementStep} variant="contained" size="large">
+        Previous Step
+      </Button>
+      <Button
+        onClick={props.incrementStep}
+        variant="contained"
+        size="large"
+        disabled={!props.selectedItems.length}
+      >
+        Next Step
+      </Button>
     </Box>
   );
 }

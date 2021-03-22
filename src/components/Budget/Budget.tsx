@@ -5,10 +5,12 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import Button from '@material-ui/core/Button';
 
 interface Props {
-  budget: number;
+  budget: number | null;
   onChange: (budget: number) => void;
+  incrementStep: () => void;
 }
 
 function Budget(props: Props) {
@@ -19,15 +21,9 @@ function Budget(props: Props) {
 
   return (
     <Box mt={4}>
-      {props.budget ? (
-        <Typography variant="h5" component="h2">
-          Your budget: ${props.budget}
-        </Typography>
-      ) : (
-        <Typography variant="h5" component="h2">
-          Please input your budget
-        </Typography>
-      )}
+      <Typography variant="h5" component="h2">
+        To start, please input your budget:
+      </Typography>
       <FormControl fullWidth component="fieldset">
         <InputLabel htmlFor="standard-adornment-budget">
           Insert your budget
@@ -40,6 +36,14 @@ function Budget(props: Props) {
           startAdornment={<InputAdornment position="start">$</InputAdornment>}
         />
       </FormControl>
+      <Button
+        onClick={props.incrementStep}
+        variant="contained"
+        size="large"
+        disabled={!props.budget}
+      >
+        Next Step
+      </Button>
     </Box>
   );
 }

@@ -12,6 +12,7 @@ import Results from 'components/Results/Results';
 
 function App() {
   const [fetchError, setFetchError] = useState<boolean>(false);
+  const [submitError, setSubmitError] = useState<boolean>(false);
   const [types, setTypes] = useState<Types>({});
   const [budget, setBudget] = useState<number | null>(null);
   const [budgetStatus, setBudgetStatus] = useState<'over' | 'under' | 'within'>(
@@ -23,20 +24,26 @@ function App() {
     highPrice: 0
   });
   const [step, setStep] = useState<number>(1);
+  const [budgetSubmitted, setBudgetSubmitted] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchItems = async () => {
       // Fetch items from firebase
-      const response = await db.collection('items').get();
+      try {
+        const response = await db.collection('items').get();
 
-      if (response.docs.length) {
-        let fetchedItems: Item[] = [];
-        response.docs.forEach((item) => {
-          fetchedItems.push(item.data() as Item);
-        });
+        if (response.docs.length) {
+          let fetchedItems: Item[] = [];
+          response.docs.forEach((item) => {
+            fetchedItems.push(item.data() as Item);
+          });
 
-        setTypes(prepTypes(fetchedItems));
-      } else {
+          setTypes(prepTypes(fetchedItems));
+        } else {
+          setFetchError(true);
+        }
+      } catch (error) {
+        console.log(error);
         setFetchError(true);
       }
     };
@@ -95,6 +102,22 @@ function App() {
     }
   };
 
+  // Send budget and selectedItems to firebase
+  const submitBudgetResponse = async () => {
+    try {
+      await db.collection('adamMishBudgetResponse').add({
+        budget: budget,
+        items: selectedItems
+      });
+
+      setBudgetSubmitted(true);
+    } catch (error) {
+      console.log(error);
+      setBudgetSubmitted(true);
+      setSubmitError(true);
+    }
+  };
+
   const incrementStep = () => {
     setStep((step) => step + 1);
   };
@@ -134,7 +157,10 @@ function App() {
                 budget={budget}
                 budgetStatus={budgetStatus}
                 priceRange={priceRange}
+                budgetSubmitted={budgetSubmitted}
+                submitError={submitError}
                 decrementStep={decrementStep}
+                onSubmit={submitBudgetResponse}
               />
             )}
           </Box>

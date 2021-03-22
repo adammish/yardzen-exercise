@@ -37,7 +37,7 @@ function Budget(props: Props) {
           />
         </FormControl>
       </Box>
-      <Box mt={4}>
+      <Box mt={4} display="flex" justifyContent="flex-end">
         <Button
           onClick={props.incrementStep}
           variant="contained"

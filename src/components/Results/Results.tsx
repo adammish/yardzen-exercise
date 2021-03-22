@@ -15,22 +15,51 @@ function Results(props: Props) {
   const currency = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
-    minimumFractionDigits: 2
+    minimumFractionDigits: 0
   });
 
   return (
     <Box mt={4}>
-      <Typography variant="h5" component="h2">
-        Select items range: {currency.format(props.priceRange.lowPrice / 100)} -{' '}
-        {currency.format(props.priceRange.highPrice / 100)}
+      <Typography variant="h5" component="p">
+        Your current budget of{' '}
+        <b>{props.budget ? currency.format(props.budget) : ''}</b> is{' '}
+        <b>{props.budgetStatus}</b> the amount necessary to purchase this yard
+        package, valued between{' '}
+        <b>{currency.format(props.priceRange.lowPrice / 100)}</b> and{' '}
+        <b>{currency.format(props.priceRange.highPrice / 100)}</b>.
       </Typography>
-
-      <Typography variant="h5" component="h2">
-        You're {props.budgetStatus} your budget.
-      </Typography>
-      <Button onClick={props.decrementStep} variant="contained" size="large">
-        Previous Step
-      </Button>
+      <Box mt={4}>
+        {props.budgetStatus !== 'under' && (
+          <Typography variant="h5" component="p">
+            Go ahead and submit your proposal!
+          </Typography>
+        )}
+        {props.budgetStatus === 'under' && (
+          <Typography variant="h5" component="p">
+            Go back and edit your choices so that your budget is within or above
+            the price range of the package.
+          </Typography>
+        )}
+      </Box>
+      <Box mt={4} display="flex" justifyContent="space-between">
+        <Button
+          onClick={props.decrementStep}
+          variant="contained"
+          size="large"
+          color="secondary"
+        >
+          Change the items I selected
+        </Button>
+        <Button
+          // onClick={props.decrementStep}
+          variant="contained"
+          size="large"
+          color="primary"
+          disabled={props.budgetStatus === 'under'}
+        >
+          Submit my proposal!
+        </Button>
+      </Box>
     </Box>
   );
 }

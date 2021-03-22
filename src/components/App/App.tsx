@@ -118,7 +118,8 @@ function App() {
         {step === 2 && (
           <ItemSelector
             types={types}
-            budgetStatus={budgetStatus}
+            budget={budget}
+            // budgetStatus={budgetStatus}
             selectedItems={selectedItems}
             priceRange={priceRange}
             onChange={handleSelectedItemsChange}

@@ -10,7 +10,7 @@ import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 
 interface Props {
   types: Types;
-  budgetStatus: 'over' | 'under' | 'within';
+  budget: number | null;
   selectedItems: Item[];
   priceRange: PriceRange;
   onChange: (item: Item) => void;
@@ -26,14 +26,13 @@ function ItemSelector(props: Props) {
   const currency = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
-    minimumFractionDigits: 2
+    minimumFractionDigits: 0
   });
 
   return (
     <Box mt={4}>
       <Typography variant="h5" component="h2">
-        Select items range: {currency.format(props.priceRange.lowPrice / 100)} -{' '}
-        {currency.format(props.priceRange.highPrice / 100)}
+        Next, choose which items you want to have in your yard:
       </Typography>
       {Object.keys(props.types).map((key, i) => (
         <FormControl fullWidth component="fieldset">
@@ -63,17 +62,38 @@ function ItemSelector(props: Props) {
           </Box>
         </FormControl>
       ))}
-      <Button onClick={props.decrementStep} variant="contained" size="large">
-        Previous Step
-      </Button>
-      <Button
-        onClick={props.incrementStep}
-        variant="contained"
-        size="large"
-        disabled={!props.selectedItems.length}
-      >
-        Next Step
-      </Button>
+      {/* Show if any items are selected */}
+      {!!props.selectedItems.length && (
+        <Box mt={4}>
+          <Typography variant="h5" component="h2">
+            The items you selected have a price range of{' '}
+            <b>
+              {currency.format(props.priceRange.lowPrice / 100)} -{' '}
+              {currency.format(props.priceRange.highPrice / 100)}
+            </b>
+            .
+          </Typography>
+        </Box>
+      )}
+      <Box mt={4} display="flex" justifyContent="space-between">
+        <Button
+          onClick={props.decrementStep}
+          variant="contained"
+          size="large"
+          color="secondary"
+        >
+          Change my budget
+        </Button>
+        <Button
+          onClick={props.incrementStep}
+          variant="contained"
+          size="large"
+          color="primary"
+          disabled={!props.selectedItems.length}
+        >
+          See my results!
+        </Button>
+      </Box>
     </Box>
   );
 }

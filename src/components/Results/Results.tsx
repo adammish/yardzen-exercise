@@ -3,6 +3,7 @@ import { PriceRange } from 'interfaces';
 import { currency } from 'utility';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
 interface Props {
@@ -45,24 +46,32 @@ function Results(props: Props) {
               </Typography>
             )}
           </Box>
-          <Box mt={4} display="flex" justifyContent="space-between">
-            <Button
-              onClick={props.decrementStep}
-              variant="contained"
-              size="large"
-              color="secondary"
-            >
-              Change the items I selected
-            </Button>
-            <Button
-              variant="contained"
-              size="large"
-              color="primary"
-              disabled={props.budgetStatus === 'under'}
-              onClick={handleSubmit}
-            >
-              Submit my proposal!
-            </Button>
+          <Box mt={4}>
+            <Grid container spacing={3}>
+              <Grid item xs={12} sm={6}>
+                <Button
+                  onClick={props.decrementStep}
+                  variant="contained"
+                  size="large"
+                  color="secondary"
+                  fullWidth
+                >
+                  Change the items I selected
+                </Button>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Button
+                  variant="contained"
+                  size="large"
+                  color="primary"
+                  fullWidth
+                  disabled={props.budgetStatus === 'under'}
+                  onClick={handleSubmit}
+                >
+                  Submit my proposal!
+                </Button>
+              </Grid>
+            </Grid>
           </Box>
         </Box>
       )}

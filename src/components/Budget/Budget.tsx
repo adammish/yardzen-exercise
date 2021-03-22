@@ -3,6 +3,7 @@ import './Budget.css';
 import CurrencyInput from 'react-currency-input-field';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 
@@ -40,15 +41,20 @@ function Budget(props: Props) {
         </FormControl>
       </Box>
       <Box mt={4} display="flex" justifyContent="flex-end">
-        <Button
-          onClick={props.incrementStep}
-          variant="contained"
-          color="primary"
-          size="large"
-          disabled={!props.budget}
-        >
-          Next Step
-        </Button>
+        <Grid container spacing={3} justify="flex-end">
+          <Grid item xs={12} sm={6}>
+            <Button
+              onClick={props.incrementStep}
+              variant="contained"
+              color="primary"
+              size="large"
+              fullWidth
+              disabled={!props.budget}
+            >
+              Next Step
+            </Button>
+          </Grid>
+        </Grid>
       </Box>
     </Box>
   );

@@ -3,6 +3,7 @@ import { Types, Item, PriceRange } from 'interfaces';
 import { currency } from 'utility';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 import ToggleButton from '@material-ui/lab/ToggleButton';
@@ -71,24 +72,32 @@ function ItemSelector(props: Props) {
           </Typography>
         </Box>
       )}
-      <Box mt={4} display="flex" justifyContent="space-between">
-        <Button
-          onClick={props.decrementStep}
-          variant="contained"
-          size="large"
-          color="secondary"
-        >
-          Change my budget
-        </Button>
-        <Button
-          onClick={props.incrementStep}
-          variant="contained"
-          size="large"
-          color="primary"
-          disabled={!props.selectedItems.length}
-        >
-          See my results!
-        </Button>
+      <Box mt={4}>
+        <Grid container spacing={3}>
+          <Grid item xs={12} sm={6}>
+            <Button
+              onClick={props.decrementStep}
+              variant="contained"
+              size="large"
+              color="secondary"
+              fullWidth
+            >
+              Change my budget
+            </Button>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Button
+              onClick={props.incrementStep}
+              variant="contained"
+              size="large"
+              color="primary"
+              fullWidth
+              disabled={!props.selectedItems.length}
+            >
+              See my results!
+            </Button>
+          </Grid>
+        </Grid>
       </Box>
     </Box>
   );

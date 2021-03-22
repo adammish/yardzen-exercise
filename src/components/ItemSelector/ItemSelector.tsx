@@ -4,7 +4,6 @@ import { currency } from 'utility';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
 import Button from '@material-ui/core/Button';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
@@ -29,13 +28,14 @@ function ItemSelector(props: Props) {
       <Typography variant="h5" component="h2">
         Next, choose which items you want to have in your yard:
       </Typography>
+      {/* Map over types and list */}
       {Object.keys(props.types).map((key, i) => (
         <FormControl fullWidth component="fieldset" key={key}>
           <Box key={i} mt={4}>
-            <FormLabel component="legend">
+            <Typography variant="body1">
               {/* Replace underscore with space */}
               {key.replace(/_/g, ' ')}
-            </FormLabel>
+            </Typography>
             <Box mt={2}>
               <ToggleButtonGroup
                 exclusive
@@ -44,6 +44,7 @@ function ItemSelector(props: Props) {
                 onChange={handleChange}
                 value={props.selectedItems}
               >
+                {/* For each item in a type, map over it */}
                 {props.types[key].map((item, i) => (
                   <ToggleButton value={item} key={item.name}>
                     {item.name} <br />

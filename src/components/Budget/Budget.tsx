@@ -13,6 +13,8 @@ interface Props {
 }
 
 function Budget(props: Props) {
+  // Send rawValue (as number) to set the state, while keeping
+  // the value of the input a string formatted for currency
   const handleChange = (value: string | undefined): void => {
     const rawValue = value === undefined ? 'undefined' : value;
     props.onChange(parseFloat(rawValue));

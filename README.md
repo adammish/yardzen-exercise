@@ -1,6 +1,6 @@
 # Yardzen Budget Calculator
 
-## Get Started
+## To use locally
 
 1. Clone repo, and `cd yardzen-exercise`
 2. Run `npm i` or `yarn`
@@ -8,14 +8,10 @@
 4. Add your firebase credentials to the new `.env` file
 5. Run `npm start` or `yarn start`
 
-Open http://localhost:3000/ to see the calculator!
+Open http://localhost:3000/ to see the budget calculator!
 
-## Production
+## To use in production
 
-### `npm run build`
+Running `npm run build` or `yarn build` will build the app for production to the `build` folder.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+This correctly bundles yardzen-exercise in production mode and optimizes the build for the best performance.

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Types, Item, PriceRange } from 'interfaces';
+import { groupBy } from 'utility';
 import db from 'firebase.config.js';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
@@ -94,14 +95,6 @@ function App() {
   const decrementStep = () => {
     setStep((step) => step - 1);
   };
-
-  const groupBy = <T, K extends keyof any>(list: T[], getKey: (item: T) => K) =>
-    list.reduce((previous, currentItem) => {
-      const group = getKey(currentItem);
-      if (!previous[group]) previous[group] = [];
-      previous[group].push(currentItem);
-      return previous;
-    }, {} as Record<K, T[]>);
 
   return (
     <Container maxWidth="md">

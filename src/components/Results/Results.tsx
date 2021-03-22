@@ -1,5 +1,6 @@
 import React from 'react';
 import { PriceRange } from 'interfaces';
+import { currency } from 'utility';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
@@ -12,21 +13,15 @@ interface Props {
 }
 
 function Results(props: Props) {
-  const currency = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 0
-  });
-
   return (
     <Box mt={4}>
       <Typography variant="h5" component="p">
         Your current budget of{' '}
-        <b>{props.budget ? currency.format(props.budget) : ''}</b> is{' '}
+        <b>{props.budget ? currency(props.budget) : ''}</b> is{' '}
         <b>{props.budgetStatus}</b> the amount necessary to purchase this yard
         package, valued between{' '}
-        <b>{currency.format(props.priceRange.lowPrice / 100)}</b> and{' '}
-        <b>{currency.format(props.priceRange.highPrice / 100)}</b>.
+        <b>{currency(props.priceRange.lowPrice / 100)}</b> and{' '}
+        <b>{currency(props.priceRange.highPrice / 100)}</b>.
       </Typography>
       <Box mt={4}>
         {props.budgetStatus !== 'under' && (

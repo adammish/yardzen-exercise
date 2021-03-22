@@ -1,5 +1,6 @@
 import React from 'react';
 import { Types, Item, PriceRange } from 'interfaces';
+import { currency } from 'utility';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import FormControl from '@material-ui/core/FormControl';
@@ -22,12 +23,6 @@ function ItemSelector(props: Props) {
   const handleChange = (e: React.MouseEvent<HTMLElement>, item: Item) => {
     props.onChange(item);
   };
-
-  const currency = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 0
-  });
 
   return (
     <Box mt={4}>
@@ -52,9 +47,9 @@ function ItemSelector(props: Props) {
                 {props.types[key].map((item, i) => (
                   <ToggleButton value={item}>
                     {item.name} <br />
-                    {`${currency.format(
-                      item.lowPrice / 100
-                    )} - ${currency.format(item.highPrice / 100)}`}
+                    {`${currency(item.lowPrice / 100)} - ${currency(
+                      item.highPrice / 100
+                    )}`}
                   </ToggleButton>
                 ))}
               </ToggleButtonGroup>
@@ -68,8 +63,8 @@ function ItemSelector(props: Props) {
           <Typography variant="h5" component="h2">
             The items you selected have a price range of{' '}
             <b>
-              {currency.format(props.priceRange.lowPrice / 100)} -{' '}
-              {currency.format(props.priceRange.highPrice / 100)}
+              {currency(props.priceRange.lowPrice / 100)} -{' '}
+              {currency(props.priceRange.highPrice / 100)}
             </b>
             .
           </Typography>
